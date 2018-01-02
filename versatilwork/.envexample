@@ -1,0 +1,21 @@
+# EXAMPLE FOR ENVIRONMENT CONFIG
+
+DEBUG=True
+
+# DATABASE
+DB_NAME=funx_db
+DB_USER=funx
+DB_PASSWORD=funx1o1
+DB_HOST=localhost
+DB_BACKEND=postgresql_psycopg2
+
+# SITE'S URL
+URL=http://127.0.0.1:8000
+
+
+# SUPERUSER CREDENTIALS
+USERNAME=admin
+PASSWORD=admin
+EMAIL=admin@mail.com
+FIRST_NAME=John
+LAST_NAME=Doe
