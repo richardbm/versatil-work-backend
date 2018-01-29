@@ -1,0 +1,12 @@
+{% extends 'base-template-email.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<tr style="text-align: center;">
+    <td style="background-color: #e8e8e8; width: 15%;"></td>
+    <td style="background-color: #e8e8e8;width: 70%;padding: 0 10px; padding-bottom: 30px;">
+        <h2 style="text-align: center;">{{ msg }}</h2>
+
+    <td style="background-color: #e8e8e8; width: 15%;"></td>
+</tr>
+{% endblock content %}

@@ -48,7 +48,9 @@ INSTALLED_APPS = [
     'graphene_django',
     'accounts',
     'activity',
+    'contracts',
     'utils',
+    'notifications',
     'django_filters',
 
 ]
@@ -209,3 +211,27 @@ LAST_NAME = env('LAST_NAME')
 TEST = False
 if len(sys.argv) > 1 and sys.argv[1] == 'test':
     TEST = True
+
+
+################ Facebook ###################
+
+FACEBOOK_CLIENT = '180528702549642'
+FACEBOOK_SECRET = '4c861759172d53abe1df35e68ad05b47'
+
+
+# url para cambiar el code por un nuevo access_token
+ACCESS_TOKEN_URL = 'https://graph.facebook.com/v2.11/oauth/access_token'
+
+# url para obtener datos de perfil
+GRAPH_API_URL = 'https://graph.facebook.com/v2.11/me?' \
+                'fields=id,last_name,first_name,email,hometown,picture.type(normal)'
+
+REDIRECT_URI = 'http://localhost:8080/#/profile'
+
+#TODO Corregir envio de emails
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'anuvenmx@gmail.com'
+# EMAIL_HOST_PASSWORD = 'creaturi1o'
+# EMAIL_PORT = 25
+URL = env('URL')

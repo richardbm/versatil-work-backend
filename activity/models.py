@@ -35,3 +35,17 @@ class Activity(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class ResponseToActivity(models.Model):
+    activity = models.ForeignKey("activity.Activity",
+                                 on_delete=models.CASCADE,
+                                 related_name="responses")
+    description = models.TextField(blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    owner = models.ForeignKey("accounts.User",
+                              on_delete=models.SET(1))
+
+    def __str__(self):
+        return "{0} {1}".format(self.owner.get_full_name(), self.description)

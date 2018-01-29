@@ -1,4 +1,4 @@
-from graphene_django_extras import DjangoObjectType, DjangoListObjectType
+from graphene_django_extras import DjangoObjectType
 from activity import models as activity_models
 from utils.models import Image
 import graphene
@@ -21,10 +21,18 @@ class CategoryType(DjangoObjectType):
         description = " Type definition for a activity's category "
 
 
+class ResponseType(DjangoObjectType):
+
+    class Meta:
+        model = activity_models.ResponseToActivity
+        description = " Type definition for Responses"
+
+
 class ActivityType(DjangoObjectType):
     image = graphene.List(ImageType)
     type_activity_display = graphene.String()
     first_image = graphene.String()
+    responses = graphene.List(ResponseType)
 
     def resolve_first_image(self, *args, **kwargs):
         images = self.image.all()
@@ -37,6 +45,9 @@ class ActivityType(DjangoObjectType):
 
     def resolve_image(self, *args, **kwargs):
         return self.image.all()
+
+    def resolve_responses(self, *args, **kwargs):
+        return self.responses.all()
 
     class Meta:
         model = activity_models.Activity
