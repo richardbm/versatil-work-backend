@@ -36,7 +36,6 @@ class CreateActivityMutation(graphene.Mutation):
         description = graphene.String(required=True)
         type_activity = graphene.String(required=True)
         category_id = graphene.Int(required=True)
-        owner_id = graphene.Int(required=True)
 
     id = graphene.Int()
     title = graphene.String()
@@ -53,7 +52,11 @@ class CreateActivityMutation(graphene.Mutation):
         return self.get_category_display()
 
     @staticmethod
-    def mutate(root, *args, **kwargs):
+    def mutate(root, info, *args, **kwargs):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("User not auth")
+        kwargs['owner'] = user
         return create_activity(kwargs)
 
 
@@ -62,7 +65,6 @@ class ResponseActivityMutation(graphene.Mutation):
     class Arguments:
         description = graphene.String(required=True)
         activity_id = graphene.Int(required=True)
-        owner_id = graphene.Int(required=True)
 
     id = graphene.Int()
     activity = graphene.Field(ActivityType)
@@ -70,7 +72,9 @@ class ResponseActivityMutation(graphene.Mutation):
     owner = graphene.Field(User)
 
     @staticmethod
-    def mutate(root, *args, **kwargs):
+    def mutate(root, info, *args, **kwargs):
+        user = info.context.user
+        kwargs['owner'] = user
         instance = create_response(kwargs)
         notify_for_response(instance.id)
         return instance

@@ -14,6 +14,7 @@ class User(AbstractUser):
     #TODO enviar campo phone en los datos de respuesta
     phone = models.CharField(max_length=15, blank=True, null=True)
     facebook_id = models.TextField(blank=True)
+    facebook_picture_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return str(self.username)
@@ -31,12 +32,6 @@ class Token(models.Model):
     created = models.DateTimeField(_("Created"), auto_now_add=True)
 
     class Meta:
-        # Work around for a bug in Django:
-        # https://code.djangoproject.com/ticket/19422
-        #
-        # Also see corresponding ticket:
-        # https://github.com/encode/django-rest-framework/issues/705
-        abstract = 'rest_framework.authtoken' not in settings.INSTALLED_APPS
         verbose_name = _("Token")
         verbose_name_plural = _("Tokens")
 

@@ -73,7 +73,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'accounts.auth.middleware.AuthTokenMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -221,6 +221,7 @@ FACEBOOK_SECRET = '4c861759172d53abe1df35e68ad05b47'
 
 # url para cambiar el code por un nuevo access_token
 ACCESS_TOKEN_URL = 'https://graph.facebook.com/v2.11/oauth/access_token'
+CLIENT_CODE_URL = 'https://graph.facebook.com/v2.11/oauth/client_code'
 
 # url para obtener datos de perfil
 GRAPH_API_URL = 'https://graph.facebook.com/v2.11/me?' \
@@ -235,3 +236,4 @@ REDIRECT_URI = 'http://localhost:8080/#/profile'
 # EMAIL_HOST_PASSWORD = 'creaturi1o'
 # EMAIL_PORT = 25
 URL = env('URL')
+

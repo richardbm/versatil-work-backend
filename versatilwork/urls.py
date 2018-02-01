@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from graphene_django.views import GraphQLView
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.decorators import authentication_classes, permission_classes
 
 
 urlpatterns = [

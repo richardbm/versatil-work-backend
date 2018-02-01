@@ -10,10 +10,10 @@ class AuthenticateUserMutation(graphene.Mutation):
     class Arguments:
         facebook_token = graphene.String()
 
-    token = graphene.String()
+    key = graphene.String()
 
     @staticmethod
-    def mutate(root, access_token, *args, **kwargs):
-        instance = auth_facebook(web_access_token=access_token)
-
+    def mutate(root, *args, **kwargs):
+        web_access_token = kwargs.get("facebook_token")
+        instance = auth_facebook(web_access_token=web_access_token)
         return instance
