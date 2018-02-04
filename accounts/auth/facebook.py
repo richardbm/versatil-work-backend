@@ -30,21 +30,14 @@ def auth_facebook(web_access_token):
 
     token, created = Token.objects.get_or_create(user=user)
     # data = create_login_data(token, user)
-    return token
+    return create_login_data(token, user)
 
 
-def create_login_data(token, user):
-    return {
-        'registered': True,
-        'token': token.key,
-        'user': {
-            "id": user.id,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "email": user.email,
-            "facebook_picture_url": user.facebook_picture_url,
-        }
-    }
+def create_login_data(token, user_instance):
+    class TokenData:
+        key = token.key
+        user = user_instance
+    return TokenData()
 
 
 def create_user_from_facebook(profile, user):

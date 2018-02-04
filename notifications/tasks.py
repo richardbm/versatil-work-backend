@@ -9,7 +9,7 @@ EMAIL_TEMPLATE_DEFAULT = "email-template-default.html"
 
 @shared_task
 def send_email(subject, to, data={}, template=None):
-    data["url"] = settings.URL
+    data["url"] = settings.URL_WEB
     from_email = settings.EMAIL_HOST_USER
     if not template:
         template = EMAIL_TEMPLATE_DEFAULT

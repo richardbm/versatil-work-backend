@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'utils',
     'notifications',
     'django_filters',
+    'django_extensions',
 
 ]
 
@@ -230,10 +231,15 @@ GRAPH_API_URL = 'https://graph.facebook.com/v2.11/me?' \
 REDIRECT_URI = 'http://localhost:8080/#/profile'
 
 #TODO Corregir envio de emails
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_HOST_USER = 'anuvenmx@gmail.com'
-# EMAIL_HOST_PASSWORD = 'creaturi1o'
-# EMAIL_PORT = 25
+EMAIL_USE_TLS = True if env('EMAIL_USE_TLS') == "True" else False
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = env('EMAIL_PORT')
 URL = env('URL')
+URL_WEB = env('URL_WEB')
 
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': False
+}

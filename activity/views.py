@@ -47,7 +47,7 @@ class ActivityType(DjangoObjectType):
         return self.image.all()
 
     def resolve_responses(self, *args, **kwargs):
-        return self.responses.all()
+        return self.responses.all().order_by("date")
 
     class Meta:
         model = activity_models.Activity

@@ -10,7 +10,6 @@ ACTIVITY_TYPE = (
 
 
 class Category(models.Model):
-    # TODO: Hacerlo con emoticons unicode
     name = models.CharField(max_length=50)
     icon = models.CharField(max_length=50)
     icon_color = models.CharField(max_length=50)
@@ -19,6 +18,19 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+OPEN = "OP"
+PENDING = "PE"
+DONE = "DO"
+CANCELlED = "pe"
+
+STATUS_ACTIVITY = (
+    (OPEN, _("Abierta")),
+    (PENDING, _("Pendiente")),
+    (DONE, _("Realizada")),
+    (CANCELlED, _("Cancelada")),
+)
 
 
 class Activity(models.Model):
@@ -30,6 +42,9 @@ class Activity(models.Model):
                               on_delete=models.SET(1))
     date = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=2,
+                              choices=STATUS_ACTIVITY,
+                              default=OPEN)
     category = models.ForeignKey("activity.Category",
                                  on_delete=models.SET(1))
 
@@ -41,6 +56,20 @@ class ResponseToActivity(models.Model):
     activity = models.ForeignKey("activity.Activity",
                                  on_delete=models.CASCADE,
                                  related_name="responses")
+    description = models.TextField(blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    owner = models.ForeignKey("accounts.User",
+                              on_delete=models.SET(1))
+
+    def __str__(self):
+        return "{0} {1}".format(self.owner.get_full_name(), self.description)
+
+
+class OfferToActivity(models.Model):
+    activity = models.ForeignKey("activity.Activity",
+                                 on_delete=models.CASCADE,
+                                 related_name="offers")
     description = models.TextField(blank=True)
     date = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
