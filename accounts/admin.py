@@ -4,5 +4,4 @@ from accounts import models
 
 admin.site.register(models.User)
 admin.site.register(models.RatingSupply)
-admin.site.register(models.RatingDemand)
 admin.site.register(models.Token)

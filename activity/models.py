@@ -48,6 +48,10 @@ class Activity(models.Model):
     category = models.ForeignKey("activity.Category",
                                  on_delete=models.SET(1))
 
+    @property
+    def get_contract(self):
+        return self.contract
+
     def __str__(self):
         return self.title
 
@@ -63,7 +67,8 @@ class ResponseToActivity(models.Model):
                               on_delete=models.SET(1))
 
     def __str__(self):
-        return "{0} {1}".format(self.owner.get_full_name(), self.description)
+        return "{0} {1}".format(self.owner.get_full_name(),
+                                self.description)
 
 
 class OfferToActivity(models.Model):
@@ -71,10 +76,13 @@ class OfferToActivity(models.Model):
                                  on_delete=models.CASCADE,
                                  related_name="offers")
     description = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    scheduled_for = models.DateTimeField()
     date = models.DateTimeField(auto_now_add=True)
     date_updated = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey("accounts.User",
                               on_delete=models.SET(1))
 
     def __str__(self):
-        return "{0} {1}".format(self.owner.get_full_name(), self.description)
+        return "{0} {1}".format(self.owner.get_full_name(),
+                                self.description)

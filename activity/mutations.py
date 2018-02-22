@@ -1,8 +1,9 @@
 import graphene
-from activity.services import create_activity, create_response
+from activity.services import (create_activity, create_response,
+                               rating_activity, create_offer)
 from accounts.views import User
 from activity.views import CategoryType, ActivityType
-from activity.tasks import notify_for_response
+from activity.tasks import notify_for_response, notify_for_offer
 
 
 class CreateActivityMutation(graphene.Mutation):
@@ -77,4 +78,42 @@ class ResponseActivityMutation(graphene.Mutation):
         kwargs['owner'] = user
         instance = create_response(kwargs)
         notify_for_response(instance.id)
+        return instance
+
+
+class OfferActivityMutation(graphene.Mutation):
+
+    class Arguments:
+        description = graphene.String(required=True)
+        activity_id = graphene.Int(required=True)
+        price = graphene.String(required=True)
+        scheduled_for = graphene.String(required=True)
+
+    id = graphene.Int()
+    activity = graphene.Field(ActivityType)
+    description = graphene.String()
+    owner = graphene.Field(User)
+
+    @staticmethod
+    def mutate(root, info, *args, **kwargs):
+        user = info.context.user
+        kwargs['owner'] = user
+        instance = create_offer(kwargs)
+        notify_for_offer(instance.id)
+        return instance
+
+
+class DoneActivityMutation(graphene.Mutation):
+
+    class Arguments:
+        rating = graphene.Int(required=True)
+        activity_id = graphene.Int(required=True)
+
+    id = graphene.Int()
+    activity = graphene.Field(ActivityType)
+    points = graphene.Int()
+
+    @staticmethod
+    def mutate(root, info, *args, **kwargs):
+        instance = rating_activity(kwargs)
         return instance

@@ -1,4 +1,4 @@
-from activity.models import Activity, Category, ResponseToActivity
+from activity.models import Activity, Category, OfferToActivity
 from accounts.models import User
 from django.utils.translation import ugettext_lazy as _
 
@@ -19,6 +19,12 @@ def resolve_activity(params):
     name = "activity_id"
     param_id = params.get(name)
     return resolve_relation(Activity, name, param_id)
+
+
+def resolve_offer(params):
+    name = "offer_id"
+    param_id = params.get(name)
+    return resolve_relation(OfferToActivity, name, param_id)
 
 
 def resolve_relation(model, param_name, param_id=None, required=True):

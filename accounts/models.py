@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import signals
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 import os
@@ -14,8 +15,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=15, blank=True, null=True)
     facebook_id = models.TextField(blank=True)
     facebook_picture_url = models.URLField(blank=True, null=True)
-    rating_supply = models.IntegerField(null=True, blank=True)
-    rating_demand = models.IntegerField(null=True, blank=True)
+    rating_supply = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.username)
@@ -70,14 +70,14 @@ class RatingSupply(models.Model):
         return self.user.get_full_name()
 
 
-class RatingDemand(models.Model):
-    user = models.ForeignKey("User",
-                             related_name="list_rating_demand",
-                             on_delete=models.CASCADE)
-    activity = models.ForeignKey("activity.Activity",
-                                 on_delete=models.CASCADE)
-    points = models.IntegerField(choices=CHOICE_POINTS)
-    date = models.DateTimeField(auto_now_add=True)
+def save_rating(sender, instance, created=None, **kwargs):
+    if created:
+        user = instance.user
+        rating_queryset = user.list_rating_supply.all()
+        list_points = [obj.points for obj in rating_queryset]
+        points = sum(list_points) / rating_queryset.count()
+        user.rating_supply = points
+        user.save()
 
-    def __str__(self):
-        return self.user.get_full_name()
+
+signals.post_save.connect(save_rating, sender=RatingSupply)
